@@ -1,0 +1,61 @@
+### Authentication API Endpoints
+@baseUrl = http://localhost:3000
+@contentType = application/json
+
+### Register new user
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
+
+{
+    "firstName": "Markide",
+    "lastName": "4",
+    "email": "markide4@gmail.com",
+    "password": "password123"
+}
+
+### Attempt to create admin user  
+POST {{baseUrl}}/auth/register
+Content-Type: {{contentType}}
+
+{
+    "firstName": "Admin",
+    "lastName": "User",
+    "email": "admin@example.com",
+    "password": "admin123456",
+    "role": "ADMIN"
+}
+
+### Login as admin
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+    "email": "markndwiga@gmail.com",
+    "password": "Pass_1234"
+}
+
+### Login as user
+POST {{baseUrl}}/auth/login
+Content-Type: {{contentType}}
+
+{
+    "email": "markide4@gmail.com",
+    "password": "Pass_1234"
+}
+
+### Request password reset
+POST {{baseUrl}}/auth/forgot-password
+Content-Type: {{contentType}}
+
+{
+    "email": "markide4@gmail.com"
+}
+
+### Reset password using code from email
+POST {{baseUrl}}/auth/reset-password
+Content-Type: {{contentType}}
+
+{
+    "token": "510246" ,
+    "newPassword": "Npass_123"
+}

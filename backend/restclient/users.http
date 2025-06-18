@@ -1,0 +1,48 @@
+@baseUrl = http://localhost:3000
+@contentType = application/json
+@authToken =
+
+@userId =  
+
+### Get all users
+GET {{baseUrl}}/users
+Authorization: Bearer {{authToken}}
+
+
+### Get user profile
+GET {{baseUrl}}/users/profile
+Authorization: Bearer {{authToken}}
+
+### Update user profile 
+PUT {{baseUrl}}/users/profile
+Authorization: Bearer {{authToken}}
+Content-Type: {{contentType}}
+
+{
+    "firstName": "Markide",
+    "lastName": "Shopper",
+    "password": "Npass_123"
+}
+
+
+### Upload Profile Image
+PUT {{baseUrl}}/users/profile
+Authorization: Bearer {{authToken}}
+Content-Type: multipart/form-data; boundary=----FormBoundary1234
+
+------FormBoundary1234
+Content-Disposition: form-data; name="profileImage"; filename="profile.jpg"
+Content-Type: image/jpeg
+
+< /home/m_/Pictures/profile.jpg
+------FormBoundary1234--
+
+
+### Deactivate own account 
+DELETE {{baseUrl}}/users/deactivate
+Authorization: Bearer {{authToken}}
+
+
+### Delete inactive user 
+DELETE {{baseUrl}}/users/{{userId}}
+Authorization: Bearer {{authToken}}

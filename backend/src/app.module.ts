@@ -6,11 +6,20 @@ import { UsersModule } from './users/users.module';
 import { ProductsModule } from './products/products.module';
 import { CartModule } from './cart/cart.module';
 import { OrdersModule } from './orders/orders.module';
-import { PrismaService } from './prisma/prisma.service';
+import { PrismaModule } from './prisma/prisma.module';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
-  imports: [AuthModule, UsersModule, ProductsModule, CartModule, OrdersModule],
+  imports: [
+    SharedModule,
+    PrismaModule,
+    AuthModule,
+    UsersModule,
+    ProductsModule,
+    CartModule,
+    OrdersModule,
+  ],
   controllers: [AppController],
-  providers: [AppService, PrismaService],
+  providers: [AppService],
 })
 export class AppModule {}
