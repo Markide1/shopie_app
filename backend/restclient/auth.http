@@ -10,7 +10,7 @@ Content-Type: {{contentType}}
     "firstName": "Markide",
     "lastName": "4",
     "email": "markide4@gmail.com",
-    "password": "password123"
+    "password": "Npass_123"
 }
 
 ### Attempt to create admin user  
@@ -31,7 +31,7 @@ Content-Type: {{contentType}}
 
 {
     "email": "markndwiga@gmail.com",
-    "password": "Pass_1234"
+    "password": "Admin_1234"
 }
 
 ### Login as user
@@ -40,7 +40,7 @@ Content-Type: {{contentType}}
 
 {
     "email": "markide4@gmail.com",
-    "password": "Pass_1234"
+    "password": "Npass_123"
 }
 
 ### Request password reset
@@ -56,6 +56,6 @@ POST {{baseUrl}}/auth/reset-password
 Content-Type: {{contentType}}
 
 {
-    "token": "510246" ,
+    "token": "769954" ,
     "newPassword": "Npass_123"
 }

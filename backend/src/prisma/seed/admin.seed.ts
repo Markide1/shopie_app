@@ -18,30 +18,12 @@ async function main() {
     },
   });
 
-  // Create sample products
-  await prisma.product.createMany({
-    data: [
-      {
-        name: 'Dell x9 Laptop',
-        description: 'High-performance laptop',
-        price: 84999.99,
-        stock: 10,
-      },
-      {
-        name: 'Dell Wireless Mouse',
-        description: 'Wireless mouse',
-        price: 599.99,
-        stock: 50,
-      },
-    ],
-  });
-
-  console.log('Data added successfully');
+  console.log('Admin added successfully');
 }
 
 main()
   .catch((error) => {
-    console.error('Error adding data:', error);
+    console.error('Error adding Admin:', error);
     process.exit(1);
   })
   .finally(() => {

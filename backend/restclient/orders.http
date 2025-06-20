@@ -1,0 +1,49 @@
+@baseUrl = http://localhost:3000
+@authToken = 
+
+@cartId =  
+
+@orderId = 
+
+
+
+### Create order with shipping address
+POST {{baseUrl}}/orders
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "cartIds": ["{{cartId}}"],
+    "address": "123 Ndagani St",
+    "city": "Chuka",
+    "postalCode": "60400",
+    "country": "Kenya"
+}
+
+### Confirm order payment
+PUT {{baseUrl}}/orders/{{orderId}}/confirm-payment
+Authorization: Bearer {{authToken}}
+
+### Cancel order
+PUT {{baseUrl}}/orders/{{orderId}}/cancel
+Authorization: Bearer {{authToken}}
+
+### Update order to shipped (admin only)
+PUT {{baseUrl}}/orders/{{orderId}}/ship
+Authorization: Bearer {{authToken}}
+
+### Confirm order delivery
+PUT {{baseUrl}}/orders/{{orderId}}/confirm-delivery
+Authorization: Bearer {{authToken}}
+
+### Get user orders
+GET {{baseUrl}}/orders
+Authorization: Bearer {{authToken}}
+
+### Get specific order
+GET {{baseUrl}}/orders/{{orderId}}
+Authorization: Bearer {{authToken}}
+
+### Get all orders (admin)
+GET {{baseUrl}}/orders/admin
+Authorization: Bearer {{authToken}}

@@ -1,0 +1,31 @@
+@baseUrl = http://localhost:3000
+@authToken = 
+@productId = 
+
+
+### Get cart items
+GET {{baseUrl}}/cart
+Authorization: Bearer {{authToken}}
+
+### Add item to cart
+POST {{baseUrl}}/cart
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "productId": "{{productId}}",
+    "quantity": 1
+}
+
+### Update cart item quantity
+PUT {{baseUrl}}/cart/{{productId}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "quantity": 26
+}
+
+### Remove item from cart
+DELETE {{baseUrl}}/cart/{{productId}}
+Authorization: Bearer {{authToken}}

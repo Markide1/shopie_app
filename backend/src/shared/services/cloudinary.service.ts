@@ -12,28 +12,51 @@ export class CloudinaryService {
     });
   }
 
-  async uploadImage(file: Express.Multer.File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const upload = cloudinary.uploader.upload_stream(
-        {
-          folder: 'shopie-profiles',
-        },
-        (
-          error: UploadApiErrorResponse | undefined,
-          result: UploadApiResponse | undefined,
-        ) => {
-          if (error || !result) {
-            return reject(
-              error instanceof Error
-                ? error
-                : new Error(error?.message || 'Upload failed'),
-            );
-          }
-          resolve(result.secure_url);
-        },
-      );
+  // Upload image function
+  async uploadImage(
+    file: Express.Multer.File,
+    folder: string = 'shopie-profiles',
+  ): Promise<string> {
+    try {
+      return await new Promise<string>((resolve, reject) => {
+        const upload = cloudinary.uploader.upload_stream(
+          {
+            folder,
+          },
+          (
+            error: UploadApiErrorResponse | undefined,
+            result: UploadApiResponse | undefined,
+          ) => {
+            if (error || !result) {
+              reject(
+                error instanceof Error
+                  ? error
+                  : new Error(error?.message || 'Upload failed'),
+              );
+              return;
+            }
+            resolve(result.secure_url);
+          },
+        );
 
-      upload.end(file.buffer);
+        upload.end(file.buffer);
+      });
+    } catch (error) {
+      throw error instanceof Error
+        ? error
+        : new Error('Failed to upload image');
+    }
+  }
+
+  // Delete image from Cloudinary
+  async deleteImage(publicId: string): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      cloudinary.uploader
+        .destroy(publicId)
+        .then(() => resolve())
+        .catch((error: Error) => {
+          reject(new Error(`Failed to delete image: ${error.message}`));
+        });
     });
   }
 }

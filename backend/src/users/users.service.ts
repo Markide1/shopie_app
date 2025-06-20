@@ -45,6 +45,24 @@ export class UsersService {
     });
   }
 
+  // Find a user by Email
+  async findByEmail(email: string): Promise<UserResponse | null> {
+    return this.prisma.user.findUnique({
+      where: { email },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        profileImage: true,
+        role: true,
+        isActive: true,
+        createdAt: true,
+      },
+    });
+  }
+
+  // Find user by ID
   async findOne(id: string): Promise<UserResponse> {
     const user = await this.prisma.user.findUnique({
       where: { id },
@@ -67,6 +85,7 @@ export class UsersService {
     return user;
   }
 
+  // Update a user's profile
   async updateProfile(
     id: string,
     dto: UpdateUserDto,
@@ -120,6 +139,7 @@ export class UsersService {
     }
   }
 
+  // Deactivate a customer's account
   async deactivateAccount(userId: string): Promise<{ message: string }> {
     try {
       const user = await this.prisma.user.findUnique({
@@ -158,6 +178,7 @@ export class UsersService {
     }
   }
 
+  // Delete a inactive customer accounts
   async remove(id: string, adminId: string): Promise<{ message: string }> {
     try {
       const targetUser = await this.prisma.user.findUnique({

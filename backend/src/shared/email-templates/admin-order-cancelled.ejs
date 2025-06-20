@@ -1,0 +1,137 @@
+<table cellpadding="0" cellspacing="0" border="0" width="100%"
+  style="background-color: #f4f6f9; margin: 0; padding: 20px 0; font-family: Arial, sans-serif;">
+  <tr>
+    <td align="center">
+      <table cellpadding="0" cellspacing="0" border="0" width="600"
+        style="max-width: 600px; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+
+        <!-- Header -->
+        <tr>
+          <td style="background-color: #e74c3c; padding: 30px 20px; text-align: center;">
+            <h1
+              style="color: #ffffff; font-size: 28px; font-weight: 700; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+              Order Cancelled! ⚠️
+            </h1>
+            <style>
+              .refund-required {
+                color: #e74c3c;
+                font-weight: 600;
+              }
+
+              .no-payment {
+                color: #2c3e50;
+              }
+            </style>
+          </td>
+        </tr>
+
+        <!-- Main Content -->
+        <tr>
+          <td style="padding: 30px;">
+
+            <!-- Order Cancellation Details Section -->
+            <table cellpadding="0" cellspacing="0" border="0" width="100%"
+              style="background-color: #fdf2f2; border-radius: 6px; margin: 25px 0; border-left: 4px solid #e74c3c;">
+              <tr>
+                <td style="padding: 25px;">
+                  <h3 style="color: #2c3e50; font-size: 20px; font-weight: 600; margin: 0 0 20px 0;">
+                    Order Cancellation Details:
+                  </h3>
+
+                  <table cellpadding="0" cellspacing="0" border="0" width="100%"
+                    style="background-color: #ffffff; border-radius: 6px; margin: 15px 0; border: 1px solid #bdc3c7;">
+                    <tr>
+                      <td style="padding: 20px;">
+                        <p style="color: #2c3e50; margin: 0 0 12px 0; font-size: 16px;">
+                          <strong style="color: #2c3e50; font-weight: 600;">Order ID:</strong>
+                          <%= order.id %>
+                        </p>
+                        <p style="color: #2c3e50; margin: 0 0 12px 0; font-size: 16px;">
+                          <strong style="color: #2c3e50; font-weight: 600;">Customer:</strong>
+                          <%= user.firstName %>
+                            <%= user.lastName %>
+                        </p>
+                        <p style="color: #2c3e50; margin: 0 0 12px 0; font-size: 16px;">
+                          <strong style="color: #2c3e50; font-weight: 600;">Email:</strong>
+                          <%= user.email %>
+                        </p>
+                        <p style="font-size: 20px; color: #f39c12; font-weight: 700; margin: 0 0 12px 0;">
+                          <strong>Refund Amount:</strong> $<%= order.totalAmount %>
+                        </p>
+                        <p style="color: #2c3e50; margin: 0 0 12px 0; font-size: 16px;">
+                          <strong style="color: #2c3e50; font-weight: 600;">Original Shipping Address:</strong><br>
+                          <%= order.address %><br>
+                            <%= order.city %>, <%= order.postalCode %><br>
+                                <%= order.country %>
+                        </p>
+                        <p style="color: #2c3e50; margin: 0 0 12px 0; font-size: 16px;">
+                          <strong style="color: #2c3e50; font-weight: 600;">Payment Status:</strong>
+                          <span class="<%= order.isPaid ? 'refund-required' : 'no-payment' %>">
+                            <%= order.isPaid ? 'Refund Required' : 'No Payment Received' %>
+                          </span>
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+
+            <p style="font-size: 16px; color: #34495e; margin: 0 0 16px 0; line-height: 1.6;">
+              Please process the refund for this order.
+            </p>
+
+            <!-- Button -->
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+              <tr>
+                <td align="center" style="padding: 25px 0;">
+                  <a href="#"
+                    style="display: inline-block; background-color: #3498db; color: #ffffff; padding: 15px 30px; text-decoration: none; border-radius: 6px; font-weight: 600; font-size: 16px; box-shadow: 0 3px 6px rgba(52,152,219,0.3);">
+                    Process Refund
+                  </a>
+                </td>
+              </tr>
+            </table>
+
+            <!-- Order Items to Restock Section -->
+            <table cellpadding="0" cellspacing="0" border="0" width="100%"
+              style="background-color: #ecf0f1; border-radius: 6px; margin: 25px 0; border-left: 4px solid #3498db;">
+              <tr>
+                <td style="padding: 25px;">
+                  <h3 style="color: #2c3e50; font-size: 20px; font-weight: 600; margin: 0 0 20px 0;">
+                    Order Items to Restock:
+                  </h3>
+
+                  <table cellpadding="0" cellspacing="0" border="0" width="100%"
+                    style="background-color: #ffffff; border-radius: 6px; margin: 15px 0; border: 1px solid #bdc3c7;">
+                    <tr>
+                      <td style="padding: 20px;">
+                        <% order.orderItems.forEach(item=> { %>
+                          <p style="color: #2c3e50; margin: 0 0 12px 0; font-size: 16px;">
+                            • <%= item.product.name %> (Quantity: <%= item.quantity %>)
+                          </p>
+                          <% }); %>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="padding: 20px 30px; background-color: #ecf0f1; border-top: 1px solid #bdc3c7; text-align: center;">
+            <p style="font-size: 14px; color: #7f8c8d; margin: 0 0 8px 0;">
+              This order has been automatically marked for refund processing.
+            </p>
+            <p style="font-size: 14px; color: #7f8c8d; margin: 0;">
+              Reference: <%= order.id %>
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

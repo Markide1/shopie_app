@@ -16,6 +16,7 @@ import { Role } from '@prisma/client';
 import { EmailService } from '../shared/services/email.service';
 import { ForgotPasswordDto } from './dto/forgot-password.dto';
 import { ResetPasswordDto } from './dto/reset-password.dto';
+import { WelcomeEmailData } from '../shared/types/email.types';
 
 @Injectable()
 export class AuthService {
@@ -25,6 +26,7 @@ export class AuthService {
     private emailService: EmailService,
   ) {}
 
+  // Registers a new customer
   async register(dto: RegisterDto): Promise<AuthResponse> {
     if (dto.role === Role.ADMIN) {
       throw new ForbiddenException('Admin can not be registered');
@@ -55,6 +57,16 @@ export class AuthService {
       },
     });
 
+    // Send welcome email
+
+    const welcomeData: WelcomeEmailData = {
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+    };
+
+    await this.emailService.sendWelcomeEmail(welcomeData);
+
     return {
       user: {
         ...user,
@@ -64,6 +76,8 @@ export class AuthService {
     };
   }
 
+  // Log in a user and return JWT token
+
   async login(dto: LoginDto): Promise<AuthResponse> {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
@@ -71,6 +85,13 @@ export class AuthService {
 
     if (!user || !(await bcrypt.compare(dto.password, user.password))) {
       throw new UnauthorizedException('Check credentials again');
+    }
+
+    // Check for inactive account
+    if (!user.isActive) {
+      throw new UnauthorizedException(
+        'Account deactivated. Please create a new account.',
+      );
     }
 
     const payload: JwtPayload = {
@@ -91,6 +112,7 @@ export class AuthService {
     };
   }
 
+  // Forget password and send reset code to email
   async forgotPassword(dto: ForgotPasswordDto): Promise<{ message: string }> {
     const user = await this.prisma.user.findUnique({
       where: { email: dto.email },
@@ -98,6 +120,13 @@ export class AuthService {
 
     if (!user) {
       throw new NotFoundException('User not found');
+    }
+
+    // Check for inactive account
+    if (!user.isActive) {
+      throw new UnauthorizedException(
+        'Account deactivated. Please create a new account.',
+      );
     }
 
     const token = Math.floor(100000 + Math.random() * 900000).toString();
@@ -126,6 +155,7 @@ export class AuthService {
     }
   }
 
+  // Reset password using the token
   async resetPassword(dto: ResetPasswordDto): Promise<{ message: string }> {
     const resetToken = await this.prisma.passwordResetToken.findFirst({
       where: {
@@ -141,6 +171,13 @@ export class AuthService {
 
     if (!resetToken) {
       throw new UnauthorizedException('Invalid or expired token');
+    }
+
+    // Check for inactive account
+    if (!resetToken.user.isActive) {
+      throw new UnauthorizedException(
+        'Account deactivated. Please create a new account.',
+      );
     }
 
     try {

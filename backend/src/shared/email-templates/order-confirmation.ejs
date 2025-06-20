@@ -1,0 +1,78 @@
+<table cellpadding="0" cellspacing="0" border="0" width="100%"
+  style="background-color: #f4f6f9; margin: 0; padding: 20px 0; font-family: Arial, sans-serif;">
+  <tr>
+    <td align="center">
+      <table cellpadding="0" cellspacing="0" border="0" width="600"
+        style="max-width: 600px; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+
+        <!-- Header -->
+        <tr>
+          <td style="background-color: #27ae60; padding: 30px 20px; text-align: center;">
+            <h1
+              style="color: #ffffff; font-size: 28px; font-weight: 700; margin: 0; text-shadow: 0 2px 4px rgba(0,0,0,0.3);">
+              Order Confirmed! 🎉
+            </h1>
+          </td>
+        </tr>
+
+        <!-- Main Content -->
+        <tr>
+          <td style="padding: 30px;">
+            <p style="font-size: 16px; color: #34495e; margin: 0 0 16px 0; line-height: 1.6;">
+              Hello <%= user.firstName %>,
+            </p>
+            <p style="font-size: 16px; color: #34495e; margin: 0 0 16px 0; line-height: 1.6;">
+              Your order #<%= order.id %> has been confirmed successfully!
+            </p>
+
+            <!-- Order Details Section -->
+            <table cellpadding="0" cellspacing="0" border="0" width="100%"
+              style="background-color: #ecf0f1; border-radius: 6px; margin: 25px 0; border-left: 4px solid #3498db;">
+              <tr>
+                <td style="padding: 25px;">
+                  <h3 style="color: #2c3e50; font-size: 20px; font-weight: 600; margin: 0 0 20px 0;">
+                    Order Details:
+                  </h3>
+                  <p style="font-size: 20px; color: #f39c12; font-weight: 700; margin: 0 0 16px 0;">
+                    <strong>Total Amount:</strong> $<%= order.totalAmount %>
+                  </p>
+
+                  <!-- Delivery Address -->
+                  <table cellpadding="0" cellspacing="0" border="0" width="100%"
+                    style="background-color: #ffffff; border-radius: 6px; margin: 15px 0; border: 1px solid #bdc3c7;">
+                    <tr>
+                      <td style="padding: 20px;">
+                        <p style="color: #2c3e50; margin: 0 0 12px 0; font-size: 16px;">
+                          <strong style="color: #2c3e50; font-weight: 600;">Delivery Address:</strong><br>
+                          <%= order.address %><br>
+                            <%= order.city %>, <%= order.postalCode %><br>
+                                <%= order.country %>
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+
+            <p style="font-size: 16px; color: #34495e; margin: 0 0 16px 0; line-height: 1.6;">
+              We'll notify you once your order has been shipped.
+            </p>
+            <p style="font-size: 16px; color: #34495e; margin: 0 0 16px 0; line-height: 1.6;">
+              Thank you for choosing Grand Customs!
+            </p>
+          </td>
+        </tr>
+
+        <!-- Footer -->
+        <tr>
+          <td style="padding: 20px 30px; background-color: #ecf0f1; border-top: 1px solid #bdc3c7; text-align: center;">
+            <p style="font-size: 14px; color: #7f8c8d; margin: 0;">
+              Order ID: <%= order.id %>
+            </p>
+          </td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+</table>

@@ -1,9 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as nodemailer from 'nodemailer';
+import * as ejs from 'ejs';
+import * as path from 'path';
+import { User, Order, Product } from '@prisma/client';
+import { WelcomeEmailData, OrderEmailData } from '../types/email.types';
 
 @Injectable()
 export class EmailService {
+  private readonly logger = new Logger(EmailService.name);
   private transporter: nodemailer.Transporter;
+  private readonly templatesDir: string;
 
   constructor() {
     this.transporter = nodemailer.createTransport({
@@ -15,28 +21,166 @@ export class EmailService {
         pass: process.env.SMTP_PASSWORD,
       },
     });
+
+    this.templatesDir = path.join(process.cwd(), 'src/shared/email-templates');
   }
 
-  async sendPasswordResetEmail(to: string, resetToken: string): Promise<void> {
+  // Render EJS template with data
+  private async renderTemplate(
+    template: string,
+    data: Record<string, unknown>,
+  ): Promise<string> {
+    return await ejs.renderFile(
+      path.join(this.templatesDir, `${template}.ejs`),
+      data,
+    );
+  }
+
+  // Send email function
+  private async sendEmail(to: string, subject: string, html: string) {
     const mailOptions = {
       from: process.env.SMTP_FROM,
       to,
-      subject: 'Reset Your Password',
-      html: `
-        <h1>Password Reset Request</h1>
-        <p>You requested to reset your password. Here is your verification code:</p>
-        <h2 style="color: #2b2301; background: #f8f4e5; padding: 10px; text-align: center; font-size: 24px;">
-          ${resetToken}
-        </h2>
-        <p>This code will expire in 15 minutes.</p>
-        <p>If you didn't request this, please ignore this email.</p>
-      `,
+      subject,
+      html,
     };
 
     try {
       await this.transporter.sendMail(mailOptions);
+      this.logger.log(`Email sent successfully to ${to}`);
     } catch (error) {
-      throw new Error(`Failed to send password reset email: ${error}`);
+      const errorMessage =
+        error instanceof Error ? error.message : String(error);
+      this.logger.error(`Failed to send email to ${to}: ${errorMessage}`);
+      throw new Error(`Failed to send email: ${errorMessage}`);
     }
+  }
+
+  // Reset password email with token
+  async sendPasswordResetEmail(to: string, resetToken: string): Promise<void> {
+    const html = await this.renderTemplate('password-reset', { resetToken });
+    await this.sendEmail(to, 'Reset Your Password', html);
+  }
+
+  // Welcome email
+  async sendWelcomeEmail(userData: WelcomeEmailData): Promise<void> {
+    const html = await this.renderTemplate('welcome', {
+      firstName: userData.firstName,
+    });
+    await this.sendEmail(userData.email, 'Welcome to Grand Customs! 🚗', html);
+  }
+
+  // Order confirmation email
+  async sendOrderConfirmationEmail(emailData: OrderEmailData): Promise<void> {
+    const html = await this.renderTemplate('order-confirmation', {
+      order: emailData.order,
+      user: emailData.user,
+    });
+    await this.sendEmail(
+      emailData.user.email,
+      'Order Confirmed - Grand Customs',
+      html,
+    );
+  }
+
+  // Order shipped email
+  async sendOrderShippedEmail(order: Order & { user: User }): Promise<void> {
+    const html = await this.renderTemplate('order-shipped', {
+      order,
+      user: order.user,
+    });
+    await this.sendEmail(
+      order.user.email,
+      'Order Shipped - Grand Customs',
+      html,
+    );
+  }
+
+  // Order cancelled email
+  async sendOrderCancelledEmail(order: Order & { user: User }): Promise<void> {
+    const html = await this.renderTemplate('order-cancelled', {
+      order,
+      user: order.user,
+    });
+    await this.sendEmail(
+      order.user.email,
+      'Order Cancelled - Grand Customs',
+      html,
+    );
+  }
+
+  // Admin low stock email
+  async sendLowStockAlert(product: Product): Promise<void> {
+    const html = await this.renderTemplate('low-stock-alert', {
+      product,
+    });
+    await this.sendEmail(
+      process.env.ADMIN_EMAIL!,
+      `Low Stock Alert - ${product.name}`,
+      html,
+    );
+  }
+
+  // Admin order received email
+  async sendOrderReceivedAdminEmail(
+    order: Order & { user: User },
+  ): Promise<void> {
+    const html = await this.renderTemplate('admin-order-received', {
+      order,
+      user: order.user,
+    });
+    await this.sendEmail(
+      process.env.ADMIN_EMAIL!,
+      `New Order #${order.id} Received`,
+      html,
+    );
+  }
+
+  // Admin order cancelled emails
+  async sendOrderCancelledAdminEmail(
+    order: Order & {
+      user: User;
+      orderItems: {
+        product: {
+          name: string;
+        };
+        quantity: number;
+      }[];
+    },
+  ): Promise<void> {
+    const html = await this.renderTemplate('admin-order-cancelled', {
+      order,
+      user: order.user,
+    });
+
+    await this.sendEmail(
+      process.env.ADMIN_EMAIL!,
+      `Order #${order.id} Cancelled - Refund Required`,
+      html,
+    );
+  }
+
+  // Admin order delivered email
+  async sendOrderDeliveredAdminEmail(
+    order: Order & {
+      user: User;
+      orderItems: {
+        product: {
+          name: string;
+        };
+        quantity: number;
+      }[];
+    },
+  ): Promise<void> {
+    const html = await this.renderTemplate('admin-order-delivered', {
+      order,
+      user: order.user,
+    });
+
+    await this.sendEmail(
+      process.env.ADMIN_EMAIL!,
+      `Order #${order.id} Delivered Successfully`,
+      html,
+    );
   }
 }
