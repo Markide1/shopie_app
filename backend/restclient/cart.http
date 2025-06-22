@@ -23,7 +23,7 @@ Authorization: Bearer {{authToken}}
 Content-Type: application/json
 
 {
-    "quantity": 26
+    "quantity": 2
 }
 
 ### Remove item from cart

@@ -1,8 +1,8 @@
 @baseUrl = http://localhost:3000
 @contentType = application/json
-@authToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZWY3OTkzNS03OWQ5LTQ4NDItOWMxNS01ZWViMTQxMzg0ZDQiLCJlbWFpbCI6Im1hcmtuZHdpZ2FAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUwMzUxMDQ1LCJleHAiOjE3NTA0Mzc0NDV9.VTgwJeyfPCMzSj-QNFR0XizaVIljrGv3KNkpphymAGw
+@authToken = 
 
-@productId = 24f4c13e-e40b-4090-afba-5da3b5a58e37
+@productId = 
 
 
 ### Get all products

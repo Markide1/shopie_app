@@ -1,8 +1,8 @@
 @baseUrl = http://localhost:3000
 @contentType = application/json
-@authToken =  eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZWY3OTkzNS03OWQ5LTQ4NDItOWMxNS01ZWViMTQxMzg0ZDQiLCJlbWFpbCI6Im1hcmtuZHdpZ2FAZ21haWwuY29tIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzUwNDEzNjU3LCJleHAiOjE3NTA1MDAwNTd9.ZT_2k5qp5ZMdegXxDB3SmRNX_uhPYt4jbbROZtlf0OI
+@authToken = 
 
-@userId = 00ab177c-6097-4a0b-9745-46476da947f5
+@userId = 
 
 ### Get all users
 GET {{baseUrl}}/users
