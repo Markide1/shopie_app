@@ -1,0 +1,65 @@
+<div class="min-h-screen py-8 w-full">
+  <div class="max-w-7xl mx-auto px-4">
+    <!-- Back Button -->
+    <div class="mb-6 flex items-center justify-between">
+      <button routerLink="/customer/dashboard" 
+              class="flex items-center gap-2 text-gray-400 hover:text-white transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        Back to Dashboard
+      </button>
+      <h1 class="text-2xl font-bold text-white text-center flex-1">My Orders</h1>
+      <div class="w-40"></div>
+    </div>
+
+    @if (loading) {
+      <div class="flex justify-center items-center h-64">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+      </div>
+    }
+
+    @if (error) {
+      <div class="bg-red-500/10 border border-red-500 text-red-500 p-4 rounded-lg mb-6">
+        {{ error }}
+      </div>
+    }
+
+    @if (!loading && orders.length === 0) {
+      <div class="text-center py-12 bg-gray-100 rounded-lg">
+        <h2 class="text-xl text-gray-700 mb-4">No orders found</h2>
+        <button routerLink="/customer/products"
+                class="bg-gray-500 text-white px-6 py-2 rounded-lg hover:bg-gray-400 transition">
+          Browse Products
+        </button>
+      </div>
+    }
+
+    @if (!loading && orders.length > 0) {
+      <div class="space-y-4">
+        @for (order of orders; track order.id) {
+          <div class="bg-gray-600 rounded-lg p-6">
+            <div class="flex justify-between items-start mb-4">
+              <div>
+                <h3 class="text-lg font-medium text-white">Order #{{order.id.slice(0,8)}}</h3>
+                <p class="text-gray-300">{{order.createdAt | date:'medium'}}</p>
+              </div>
+              <span [class]="getStatusClass(order.status)"
+                    class="px-3 py-1 rounded-full text-sm font-medium">
+                {{order.status}}
+              </span>
+            </div>
+            
+            <div class="flex justify-between items-center mt-4">
+              <p class="text-white">Total: <span class="font-bold">${{order.totalAmount}}</span></p>
+              <button [routerLink]="['/customer/orders', order.id]"
+                      class="text-gray-300 hover:text-white transition">
+                View Details
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</div>

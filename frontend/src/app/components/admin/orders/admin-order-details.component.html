@@ -1,0 +1,98 @@
+<div class="bg-gray-800 min-h-screen p-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold text-white">Order Details</h1>
+      <button (click)="goBack()" class="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-500">
+        Back to Orders
+      </button>
+    </div>
+
+    <div *ngIf="order" class="bg-gray-700 rounded-lg shadow-lg p-6">
+      <!-- Order Header -->
+      <div class="border-b border-gray-600 pb-4 mb-4">
+        <div class="flex justify-between items-center">
+          <span class="text-gray-300">Order #{{order.id}}</span>
+          <span [class]="'px-3 py-1 rounded-full text-sm font-medium ' + getStatusClass(order.status)">
+            {{order.status}}
+          </span>
+        </div>
+        <p class="text-gray-400 text-sm mt-1">Placed on {{order.createdAt | date:'medium'}}</p>
+      </div>
+
+      <!-- Customer Info -->
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold text-white mb-2">Customer Details</h2>
+        <div class="text-gray-300">
+          <p>{{order.user?.firstName}} {{order.user?.lastName}}</p>
+          <p>{{order.user?.email}}</p>
+        </div>
+      </div>
+
+      <!-- Shipping Address -->
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold text-white mb-2">Shipping Address</h2>
+        <div class="bg-gray-600 p-4 rounded-lg text-gray-300">
+          <p>
+            {{ order.address || order.shippingAddress.address || 'N/A' }}
+          </p>
+          <p>
+            {{ (order.city || order.shippingAddress.city || 'N/A') }},
+            {{ order.postalCode || order.shippingAddress.postalCode || 'N/A' }}
+          </p>
+          <p>
+            {{ order.country || order.shippingAddress.country || 'N/A' }}
+          </p>
+        </div>
+      </div>
+
+      <!-- Order Items -->
+      <div class="mb-6">
+        <h2 class="text-xl font-semibold text-white mb-2">Order Items</h2>
+        <div class="space-y-4">
+          <div *ngFor="let item of order.items" class="flex items-center p-4 bg-gray-400 rounded-lg">
+            <img [src]="item.product.images[0].imageUrl" [alt]="item.product.name"
+              class="w-16 h-16 object-cover rounded mr-4">
+            <div class="flex-1">
+              <h3 class="text-white font-medium">{{item.product.name}}</h3>
+              <p class="text-gray-300">Quantity: {{item.quantity}}</p>
+              <p class="text-gray-300">Price: ${{item.price}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="border-t border-gray-600 pt-4">
+        <div class="flex justify-between items-center text-white">
+          <span class="font-semibold">Total Amount:</span>
+          <span class="text-xl">${{order.totalAmount}}</span>
+        </div>
+        <div class="flex justify-between items-center text-gray-300 mt-2">
+          <span>Payment Status:</span>
+          <span
+            [class]="
+              order.status === OrderStatus.CANCELLED
+                ? 'text-yellow-400'
+                : (order.isPaid ? 'text-green-400' : 'text-red-400')
+            ">
+            <ng-container *ngIf="order.status === OrderStatus.CANCELLED; else notCancelled">
+              Refund Now
+            </ng-container>
+            <ng-template #notCancelled>
+              {{ order.isPaid ? 'Paid' : 'Pending Payment' }}
+            </ng-template>
+          </span>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="mt-6 flex justify-end space-x-4"
+        *ngIf="order.status !== OrderStatus.DELIVERED && order.status !== OrderStatus.CANCELLED">
+        <button *ngIf="order.status === OrderStatus.PENDING || order.status === OrderStatus.CONFIRMED"
+          (click)="updateStatus(order.id)" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-400">
+          {{order.status === OrderStatus.PENDING ? 'Process Order' : 'Mark as Shipped'}}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

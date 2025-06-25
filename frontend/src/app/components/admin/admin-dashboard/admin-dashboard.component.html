@@ -1,0 +1,39 @@
+<div class="text-center bg-gray-800 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8 text-white">Welcome Admin</h1>
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <!-- Products Management Card -->
+      <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+        <h2 class="text-xl font-semibold mb-4 text-white">Products</h2>
+        <div class="space-y-3">
+          <a routerLink="/admin/products" 
+             class="block w-full px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-400 transition-colors">
+            Manage Products
+          </a>
+        </div>
+      </div>
+
+      <!-- Orders Management Card -->
+      <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+        <h2 class="text-xl font-semibold mb-4 text-white">Orders</h2>
+        <div class="space-y-3">
+          <a routerLink="/admin/orders" 
+             class="block w-full px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-400 transition-colors">
+            Manage Orders
+          </a>
+        </div>
+      </div>
+
+      <!-- Users Management Card -->
+      <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+        <h2 class="text-xl font-semibold mb-4 text-white">Users</h2>
+        <div class="space-y-3">
+          <a routerLink="/admin/users" 
+             class="block w-full px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-400 transition-colors">
+            Manage Users
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

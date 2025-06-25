@@ -1,0 +1,42 @@
+<div class="min-h-screen bg-gray-800 py-8">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="mb-6 flex items-center justify-between">
+      <button routerLink="/customer/dashboard"
+        class="flex items-center gap-2 text-gray-400 hover:text-white transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd"
+            d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z"
+            clip-rule="evenodd" />
+        </svg>
+        Back to Dashboard
+      </button>
+      <h2 class="text-2xl font-bold text-white mx-auto absolute left-1/2 transform -translate-x-1/2">Your Cart</h2>
+    </div>
+    <div *ngIf="items.length === 0" class="text-gray-400 text-center py-8 bg-gray-700 rounded-lg">
+      Cart is empty.
+    </div>
+    <div *ngFor="let item of items" class="flex items-center justify-between bg-gray-700 rounded-lg p-4 mb-4">
+      <div class="flex items-center gap-4">
+        <span class="text-white font-medium">{{ item.product.name }}</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <input type="number" [(ngModel)]="item.quantity" (change)="updateQuantity(item.product.id, item.quantity)"
+          min="1" class="w-16 px-2 py-1 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none" />
+        <button (click)="remove(item.product.id)"
+          class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-500 transition">
+          Remove
+        </button>
+      </div>
+    </div>
+    <button *ngIf="items.length" (click)="checkout()"
+      class="w-full mt-6 px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-500 transition">
+      Checkout
+    </button>
+  </div>
+  <div class="flex justify-center">
+    <button class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-400 transition mt-6"
+      routerLink="/customer/products">
+      Browse Products
+    </button>
+  </div>
+</div>

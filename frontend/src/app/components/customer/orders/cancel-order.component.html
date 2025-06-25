@@ -1,0 +1,8 @@
+<div
+  class="w-full px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-500 transition mt-4"
+  [class.opacity-50]="loading || disabled"
+  [class.pointer-events-none]="loading || disabled"
+  (click)="!(loading || disabled) && cancelOrder()">
+  <ng-container *ngIf="!loading; else loadingTpl">Cancel Order</ng-container>
+  <ng-template #loadingTpl>Processing...</ng-template>
+</div>

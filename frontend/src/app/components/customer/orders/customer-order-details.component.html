@@ -1,0 +1,133 @@
+<div class="min-h-screen bg-gray-800 py-8">
+  <div class="max-w-4xl mx-auto px-4">
+    <!-- Back Button -->
+    <div class="mb-8">
+      <button routerLink="/customer/orders" 
+              class="flex items-center gap-2 text-gray-400 hover:text-white transition">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
+        </svg>
+        Back to Orders
+      </button>
+    </div>
+
+    @if (loading) {
+      <div class="flex justify-center items-center h-64">
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+      </div>
+    }
+
+    @if (error) {
+      <div class="bg-red-500/10 border border-red-500 text-red-500 p-4 rounded-lg">
+        {{ error }}
+      </div>
+    }
+
+    @if (order) {
+      <div class="bg-gray-700 rounded-lg shadow-lg p-6">
+        <!-- Order Header -->
+        <div class="flex justify-between items-start mb-6">
+          <div>
+            <h1 class="text-2xl font-bold text-white">Order #{{order.id}}</h1>
+            <p class="text-gray-400 mt-1">Placed on {{order.createdAt | date:'medium'}}</p>
+          </div>
+          <span class="px-3 py-1 rounded-full text-sm" 
+                [ngClass]="{
+                  'bg-yellow-100 text-yellow-800': order.status === OrderStatus.PENDING,
+                  'bg-blue-100 text-blue-800': order.status === OrderStatus.CONFIRMED,
+                  'bg-purple-100 text-purple-800': order.status === OrderStatus.SHIPPED,
+                  'bg-green-100 text-green-800': order.status === OrderStatus.DELIVERED,
+                  'bg-red-100 text-red-800': order.status === OrderStatus.CANCELLED
+                }">
+            {{order.status}}
+          </span>
+        </div>
+
+        <!-- Order Items -->
+        <div class="mb-6">
+          <h2 class="text-xl font-semibold text-white mb-4">Order Items</h2>
+          <div class="space-y-4">
+            @for (item of order.items; track item.id) {
+              <div class="flex items-center space-x-4 bg-gray-600 p-4 rounded-lg">
+                @if (item.product.images.length) {
+                  <img [src]="item.product.images[0].imageUrl" 
+                       [alt]="item.product.name"
+                       class="w-16 h-16 object-cover rounded">
+                } @else {
+                  <div class="w-16 h-16 bg-gray-500 rounded"></div>
+                }
+                <div class="flex-1">
+                  <h3 class="text-white font-medium">{{item.product.name}}</h3>
+                  <p class="text-gray-400">Quantity: {{item.quantity}}</p>
+                  <p class="text-gray-400">Price: ${{item.price}}</p>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+
+        <!-- Shipping Address -->
+        <div class="mb-6">
+          <h2 class="text-xl font-semibold text-white mb-4">Shipping Address</h2>
+          <div class="bg-gray-600 p-4 rounded-lg text-gray-300">
+            <p>
+              {{ order.address || order.shippingAddress.address || 'N/A' }}
+            </p>
+            <p>
+              {{ (order.city || order.shippingAddress.city || 'N/A') }},
+              {{ order.postalCode || order.shippingAddress.postalCode || 'N/A' }}
+            </p>
+            <p>
+              {{ order.country || order.shippingAddress.country || 'N/A' }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="border-t border-gray-600 pt-4">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-gray-400">Total Amount:</span>
+            <span class="text-xl font-semibold text-white">${{order.totalAmount}}</span>
+          </div>
+          <div class="flex justify-between items-center">
+            <span class="text-gray-400">Payment Status:</span>
+            <span [class]="order.isPaid ? 'text-green-400' : 'text-red-400'">
+              {{order.isPaid ? 'Paid' : 'Pending Payment'}}
+            </span>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        @if (order.status === OrderStatus.SHIPPED) {
+          <div class="mt-6">
+            <button (click)="confirmDelivery(order.id)"
+                    class="w-full px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-500 transition">
+              Confirm Delivery
+            </button>
+          </div>
+        }
+      </div>
+    }
+
+    <!-- Payment Confirmation Component -->
+    <app-confirm-payment
+      *ngIf="order && !order.isPaid"
+      [orderId]="order.id"
+      [order]="order">
+    </app-confirm-payment>
+
+    <!-- Delivery Confirmation Component -->
+    <app-confirm-delivery
+      *ngIf="order && order.status === OrderStatus.SHIPPED"
+      [orderId]="order.id"
+      (deliveryConfirmed)="order = $event">
+    </app-confirm-delivery>
+
+    <!-- Cancel Order Component -->
+    <app-cancel-order
+      *ngIf="order && order.status !== OrderStatus.CANCELLED && order.status !== OrderStatus.DELIVERED && order.status !== OrderStatus.SHIPPED"
+      [orderId]="order.id"
+      (orderCancelled)="order = $event">
+    </app-cancel-order>
+  </div>
+</div>

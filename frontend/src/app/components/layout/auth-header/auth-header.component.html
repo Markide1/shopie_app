@@ -1,0 +1,19 @@
+<nav class="bg-gray-800 border-b border-gray-700">
+    <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="flex h-16 items-center justify-between">
+            <!-- Logo and Main Nav -->
+            <div class="flex items-center">
+                <div class="flex-shrink-0">
+                    <a routerLink="/" class="text-white font-bold text-xl">Grand Customs</a>
+                </div>
+
+                <!-- Profile dropdown -->
+                <button (click)="logout()"
+                    class="ml-3 text-gray-300 hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+                    Logout
+                </button>
+            </div>
+        </div>
+    </div>
+
+</nav>

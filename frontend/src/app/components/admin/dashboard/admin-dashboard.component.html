@@ -1,0 +1,69 @@
+<div class="text-center bg-gray-800 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <h1 class="text-3xl font-bold mb-8">Admin Dashboard</h1>
+
+    <!-- Stats Overview -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div class="bg-gray-700 rounded-lg p-6 shadow-lg">
+        <h3 class="text-lg font-semibold mb-2">Total Orders</h3>
+        <p class="text-3xl font-bold text-blue-400">{{stats.totalOrders}}</p>
+      </div>
+
+      <div class="bg-gray-700 rounded-lg p-6 shadow-lg">
+        <h3 class="text-lg font-semibold mb-2">Low Stock Products</h3>
+        <p class="text-3xl font-bold text-yellow-400">{{stats.lowStockProducts}}</p>
+      </div>
+
+      <div class="bg-gray-700 rounded-lg p-6 shadow-lg">
+        <h3 class="text-lg font-semibold mb-2">Pending Orders</h3>
+        <p class="text-3xl font-bold text-red-400">{{stats.pendingOrders}}</p>
+      </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="bg-gray-700 rounded-lg p-6 shadow-lg mb-8">
+      <h2 class="text-xl font-bold mb-4">Recent Orders</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full">
+          <thead>
+            <tr class="text-left border-b border-gray-600">
+              <th class="pb-3">Order ID</th>
+              <th class="pb-3">Customer</th>
+              <th class="pb-3">Amount</th>
+              <th class="pb-3">Status</th>
+              <th class="pb-3">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let order of recentOrders" class="border-b border-gray-600">
+              <td class="py-3">{{order.id.slice(0,8)}}</td>
+              <td>{{order.user.firstName}} {{order.user.lastName}}</td>
+              <td>\${{ order.totalAmount }}</td>
+              <td>
+                <span [class]="getStatusClass(order.status)">
+                  {{order.status}}
+                </span>
+              </td>
+              <td>
+                <button (click)="viewOrderDetails(order.id)" class="text-blue-400 hover:text-blue-300">
+                  View Details
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <button routerLink="/admin/products/new"
+        class="bg-blue-500 text-white p-4 rounded-lg hover:bg-blue-600 transition">
+        Add New Product
+      </button>
+      <button routerLink="/admin/orders" class="bg-gray-600 text-white p-4 rounded-lg hover:bg-gray-500 transition">
+        View All Orders
+      </button>
+    </div>
+  </div>
+</div>

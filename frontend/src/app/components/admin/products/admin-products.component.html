@@ -1,0 +1,60 @@
+<div class="text-center bg-gray-800 min-h-screen">
+  <div class="container mx-auto px-4 py-8">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <h1 class="text-3xl font-bold text-white">Manage Products</h1>
+      <button (click)="goBack()" class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-500">
+        Back
+      </button>
+    </div>
+
+    <!-- Product Form -->
+    <div class="bg-gray-700 p-6 rounded-lg shadow-lg mb-8">
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <!-- Form fields -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <input type="text" formControlName="name" placeholder="Product Name"
+            class="w-full p-2 rounded bg-gray-600 text-white">
+
+          <input type="number" formControlName="price" placeholder="Price"
+            class="w-full p-2 rounded bg-gray-600 text-white">
+
+          <input type="number" formControlName="stock" placeholder="Stock"
+            class="w-full p-2 rounded bg-gray-600 text-white">
+
+          <textarea formControlName="description" placeholder="Description"
+            class="w-full p-2 rounded bg-gray-600 text-white"></textarea>
+
+          <input type="file" multiple (change)="onFileSelect($event)" accept="image/*" class="w-full p-2 text-white">
+        </div>
+
+        <button type="submit" [disabled]="productForm.invalid"
+          class="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-400">
+          {{ isEditing ? 'Update' : 'Add' }} Product
+        </button>
+      </form>
+    </div>
+
+    <!-- Products List -->
+    <div class="bg-gray-700 p-6 rounded-lg shadow-lg">
+      <h2 class="text-xl font-bold mb-4 text-white">Products</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div *ngFor="let product of products" class="bg-gray-600 p-4 rounded-lg">
+          <img [src]="product.images && product.images.length > 0 ? product.images[0].imageUrl : ''" alt="Product image"
+            class="w-full h-48 object-cover rounded mb-4">
+          <h3 class="text-lg font-semibold text-white">{{product.name}}</h3>
+          <p class="text-gray-300">${{product.price}}</p>
+          <p class="text-gray-300">Stock: {{product.stock}}</p>
+          <div class="mt-4 space-x-2">
+            <button (click)="editProduct(product)" class="bg-gray-500 text-white px-4 py-2 rounded">
+              Edit
+            </button>
+            <button (click)="deleteProduct(product.id)" class="bg-red-500 text-white px-4 py-2 rounded">
+              Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

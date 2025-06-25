@@ -1,6 +1,6 @@
 @baseUrl = http://localhost:3000
 @contentType = application/json
-@authToken = 
+@authToken =
 
 @productId = 
 
@@ -24,34 +24,42 @@ Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0g
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="name"
 
-Racing Brembo Brake Pads
+Brembo 4-Port Racing Pads
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="description"
 
-High performance brake pads for superior stopping power
+Brembo 4-Port Racing Pads deliver unmatched stopping power and heat resistance for high-performance driving and track conditions. Engineered for precision and durability, they ensure consistent braking performance under extreme stress.
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="price"
 
-89999.99
+12400
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="stock"
 
 30
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="images"; filename="image1.png"
-Content-Type: image/png
+Content-Disposition: form-data; name="images"; filename="image1.jpg"
+Content-Type: image/jpeg
 
-< /home/m_/Pictures/brake1.png
+< /home/m_/Pictures/brake1.jpg
+
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="images"; filename="image2.jpg"
 Content-Type: image/jpeg
 
 < /home/m_/Pictures/brake2.jpg
+
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
 Content-Disposition: form-data; name="images"; filename="image3.jpg"
 Content-Type: image/jpeg
 
 < /home/m_/Pictures/brake3.jpg
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="images"; filename="image4.jpg"
+Content-Type: image/jpeg
+
+< /home/m_/Pictures/brake4.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
 ### Update product (admin only)

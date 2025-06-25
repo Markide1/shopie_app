@@ -1,0 +1,16 @@
+<div class="mt-8 mb-4">
+  <ng-container *ngIf="order?.status !== OrderStatus.CANCELLED; else refundTpl">
+    <button
+      class="w-full px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-400 transition disabled:opacity-50"
+      [disabled]="loading || disabled"
+      (click)="confirmPayment()">
+      <ng-container *ngIf="!loading; else loadingTpl">Confirm Payment</ng-container>
+      <ng-template #loadingTpl>Processing...</ng-template>
+    </button>
+  </ng-container>
+  <ng-template #refundTpl>
+    <div class="w-full px-4 py-2 bg-gray-500 text-white rounded-lg text-center">
+      Refund being processed
+    </div>
+  </ng-template>
+</div>

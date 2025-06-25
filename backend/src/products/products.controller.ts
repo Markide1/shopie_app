@@ -60,7 +60,7 @@ export class ProductsController {
   @Post()
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.ADMIN)
-  @UseInterceptors(FilesInterceptor('images', 3))
+  @UseInterceptors(FilesInterceptor('images', 4))
   async create(
     @Body() body: Record<string, any>,
     @UploadedFiles(

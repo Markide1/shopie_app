@@ -1,0 +1,27 @@
+<header class="bg-gray-800 py-4 border-b border-gray-700 text-white shadow-sm sticky top-0 z-50">
+  <div class="container mx-auto px-4 flex justify-between items-center">
+    <a routerLink="/" class="text-xl font-bold">Grand Customs</a>
+
+    <!-- Navigation -->
+    <nav class="hidden md:flex space-x-8">
+      <a routerLink="/" class="text-gray-400 hover:text-white">Home</a>
+      <a routerLink="/product-list" class="text-gray-400 hover:text-white">Products</a>
+      <a routerLink="/cart" class="text-gray-400 hover:text-white relative">
+        Cart
+        <span *ngIf="cartCount > 0"
+              class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+          {{ cartCount }}
+        </span>
+      </a>
+      <a routerLink="/about" class="text-gray-400 hover:text-white">About</a>
+      <a routerLink="/contact" class="text-gray-400 hover:text-white">Contact</a>
+    </nav>
+
+    <!-- Auth Button -->
+    <div class="flex items-center space-x-4">
+      <button class="inline-block bg-white text-gray-800 px-4 py-2 rounded hover:bg-gray-400 transition-colors"> 
+        <a routerLink="/login">Login</a>
+      </button>
+    </div>
+  </div>
+</header>

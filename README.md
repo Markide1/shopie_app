@@ -119,7 +119,7 @@ The backend API will be running at `http://localhost:3000`
 ### 💻 Frontend Setup (Angular)
 
 ```bash
-cd shopie/frontend
+cd Grand Customs/frontend
 npm install
 ```
 
